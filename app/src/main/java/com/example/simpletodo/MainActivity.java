@@ -38,16 +38,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Open edit view for clicked item
         ItemsAdapter.OnClickListener onClickListener= new ItemsAdapter.OnClickListener() {
             @Override
             public void onClickListener(int position) {
-                Intent editView = new Intent(MainActivity.this, EditActivity.class);
-                editView.putExtra(KEY_ITEM_TEXT, items.get(position));
-                editView.putExtra(KEY_ITEM_POSITION, position);
-                startActivityForResult(editView, EDIT_TEXT_CODE);
+                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                intent.putExtra(KEY_ITEM_TEXT, items.get(position));
+                intent.putExtra(KEY_ITEM_POSITION, position);
+                startActivityForResult(intent, EDIT_TEXT_CODE);
             }
         };
 
+        // Remove long-clicked item
         ItemsAdapter.OnLongClickListener onLongClickListener= new ItemsAdapter.OnLongClickListener() {
             @Override
             public void onItemLongClick(int position) {
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        // Initialize list using stored list from last use (if any)
         loadItems();
 
         buttonAdd = findViewById(R.id.buttonAdd);
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         itemListView.setAdapter(itemsAdapter);
         itemListView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Implement the Add button: Add new item from user input to the current list
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,11 +77,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Handle result from EditActivity by editing selected item based on user's input
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
+        // Required call to super class for override method
         super.onActivityResult(requestCode, resultCode, data);
 
+        // Update item if result is valid
         if (resultCode == RESULT_OK && requestCode == EDIT_TEXT_CODE) {
             String itemName = data.getStringExtra(KEY_ITEM_TEXT);
             int position = data.getExtras().getInt(KEY_ITEM_POSITION);
@@ -87,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Get data file that stores the current list
     private File getDataFile() {
         return new File(getFilesDir(), "data.txt");
     }
@@ -109,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Add new item to list & notify user
     private void addItem(String itemName) {
         items.add(itemName);
         itemsAdapter.notifyItemInserted(items.size() - 1);
@@ -117,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
         saveItems();
     }
 
+    // Remove item from list & notify user
     private void removeItem(int position) {
         items.remove(position);
         itemsAdapter.notifyItemRemoved(position);
@@ -124,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
         saveItems();
     }
 
+    // Update existing item in list & notify user
     private void updateItem(String itemName, int position) {
         items.set(position, itemName);
         itemsAdapter.notifyItemChanged(position);
