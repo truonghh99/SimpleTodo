@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     public static final int EDIT_TEXT_CODE = 20;
 
     List<String> items;
-
     Button buttonAdd;
     EditText newItemName;
     RecyclerView itemListView;
@@ -52,10 +51,7 @@ public class MainActivity extends AppCompatActivity {
         ItemsAdapter.OnLongClickListener onLongClickListener= new ItemsAdapter.OnLongClickListener() {
             @Override
             public void onItemLongClick(int position) {
-                items.remove(position);
-                itemsAdapter.notifyItemRemoved(position);
-                Toast.makeText(getApplicationContext(), "Item was removed!", Toast.LENGTH_SHORT).show();
-                saveItems();
+                removeItem(position);
             }
         };
 
@@ -72,26 +68,20 @@ public class MainActivity extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String itemName = newItemName.getText().toString();
-                items.add(itemName);
-                itemsAdapter.notifyItemInserted(items.size() - 1);
-                newItemName.setText("Add new item here");
-                Toast.makeText(getApplicationContext(), "Item was added!", Toast.LENGTH_SHORT).show();
-                saveItems();
+                addItem(newItemName.getText().toString());
             }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK && requestCode == EDIT_TEXT_CODE) {
             String itemName = data.getStringExtra(KEY_ITEM_TEXT);
             int position = data.getExtras().getInt(KEY_ITEM_POSITION);
-            items.set(position, itemName);
-            itemsAdapter.notifyItemChanged(position);
-            Toast.makeText(getApplicationContext(), "Item was updated!", Toast.LENGTH_SHORT).show();
-            saveItems();
+            updateItem(itemName, position);
         } else {
             Log.w("MainActivity", "Unknown call to onActivityResult");
         }
@@ -117,5 +107,27 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e("MainActivity", "Error Saving Items", e);
         }
+    }
+
+    private void addItem(String itemName) {
+        items.add(itemName);
+        itemsAdapter.notifyItemInserted(items.size() - 1);
+        newItemName.setText("Add new item here");
+        Toast.makeText(getApplicationContext(), "Item was added!", Toast.LENGTH_SHORT).show();
+        saveItems();
+    }
+
+    private void removeItem(int position) {
+        items.remove(position);
+        itemsAdapter.notifyItemRemoved(position);
+        Toast.makeText(getApplicationContext(), "Item was removed!", Toast.LENGTH_SHORT).show();
+        saveItems();
+    }
+
+    private void updateItem(String itemName, int position) {
+        items.set(position, itemName);
+        itemsAdapter.notifyItemChanged(position);
+        Toast.makeText(getApplicationContext(), "Item was updated!", Toast.LENGTH_SHORT).show();
+        saveItems();
     }
 }
