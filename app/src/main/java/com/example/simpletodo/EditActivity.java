@@ -23,7 +23,10 @@ public class EditActivity extends AppCompatActivity {
         buttonSave = findViewById(R.id.buttonSave);
 
         getSupportActionBar().setTitle("Edit Item");
+        // Initialize edit text using current value of selected item
         editText.setText(getIntent().getStringExtra(MainActivity.KEY_ITEM_TEXT));
+
+        // Implement the Save button: return updated string from user input
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
