@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     private void addItem(String itemName) {
         items.add(itemName);
         itemsAdapter.notifyItemInserted(items.size() - 1);
-        newItemName.setText("Add new item here");
+        newItemName.setText("");
         Toast.makeText(getApplicationContext(), "Item was added!", Toast.LENGTH_SHORT).show();
         saveItems();
     }
