@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     List<String> items;
     Button buttonAdd;
+    Button buttonRemoveAll;
     EditText newItemName;
     RecyclerView itemListView;
     ItemsAdapter itemsAdapter;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         loadItems();
 
         buttonAdd = findViewById(R.id.buttonAdd);
+        buttonRemoveAll = findViewById(R.id.buttonRemoveAll);
         newItemName = findViewById(R.id.newItemName);
         itemListView = findViewById(R.id.itemListView);
         itemsAdapter = new ItemsAdapter(items, onLongClickListener, onClickListener);
@@ -73,6 +75,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addItem(newItemName.getText().toString());
+            }
+        });
+
+        // Implement the Remove All button: Remove all item
+        buttonRemoveAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clearAll();
             }
         });
     }
@@ -139,5 +149,13 @@ public class MainActivity extends AppCompatActivity {
         itemsAdapter.notifyItemChanged(position);
         Toast.makeText(getApplicationContext(), "Item was updated!", Toast.LENGTH_SHORT).show();
         saveItems();
+    }
+
+    // Remove all items
+    private void clearAll() {
+        items.clear();
+        itemsAdapter.notifyDataSetChanged();
+        saveItems();
+        Toast.makeText(getApplicationContext(), "All items removed!", Toast.LENGTH_SHORT).show();
     }
 }
