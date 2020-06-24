@@ -18,11 +18,15 @@ The following **stretch** features are implemented:
 
 * [x] User can **tap a todo item in the list and bring up an edit screen for the todo item** and then have any changes to the text reflected in the todo list
 
+The following **additional** features are implemented:
+
+* [x] User can now remove all items with one click
+
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://github.com/truonghh99/SimpleTodo/blob/master/Kapture%202020-06-23%20at%2016.13.08.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/truonghh99/SimpleTodo/blob/master/Demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
